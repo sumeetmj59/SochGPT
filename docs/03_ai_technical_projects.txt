@@ -1,0 +1,26 @@
+== AI & Technical Projects ==
+1. NFT Certificate Verification System (RMIT)
+   - Blockchain-based digital credentialing solution.
+   - Tech Stack: Solidity, Polygon, IPFS, Web3.js, VS Code, MetaMask.
+   - Purpose: Enable universities to issue tamper-proof certificates as NFTs.
+
+2. HustleMate AI
+   - AI-powered productivity app designed to help students plan, reflect, and stay disciplined.
+   - Features: AI voice companion, weekly progress tracker, motivational feedback, habit analysis.
+   - Tools: Relevance AI, Make.com, FlutterFlow, Gemini API.
+
+3. Private LLM for AI & Consulting Teams
+   - Uses LangChain + Ollama for on-device reasoning over internal datasets.
+   - Purpose: Secure, domain-specific LLM that stores internal documents privately.
+   - Features: Embedding search, RAG pipeline, and API access.
+
+4. FuzzDocs: IoT Security Evaluation Framework
+   - Automated vulnerability testing for IoT ecosystems.
+   - Stack: Python, Scapy, and OWASP framework integration.
+
+5. Myself2.0 (AI Clone)
+   - A personalized AI model replicating Sumeet’s tone, empathy, and motivational style.
+   - Functions: Emotional reasoning, scheduling, and motivational responses.
+
+6. AI Governance and Ethics Framework
+   - Explores risk management, accountability, and fairness in AI adoption.

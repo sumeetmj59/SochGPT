@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.* 
+
+# Node/React
+sil-ui/node_modules/
+sil-ui/.next/
+sil-ui/.vercel/
+sil-ui/build/
+sil-ui/dist/
+
+# Data / Local DB
+chroma_db/
+docs/*.cache
+*.db
+*.sqlite
+
+# Mac/IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log

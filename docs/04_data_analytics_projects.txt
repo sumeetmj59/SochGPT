@@ -1,0 +1,14 @@
+== Data Science & Analytics Projects ==
+1. Hotel Management Data Problem Project
+   - Identified data cleaning issues, missing values, and bias in hotel booking dataset.
+   - Tools: Orange, Excel, Python (Pandas, Matplotlib).
+
+2. FXCS Bond Analysis (BAFI1065)
+   - Created Excel bond portfolio simulation with formula transparency.
+   - Calculated yields, spreads, and portfolio duration metrics.
+
+3. Business Analytics using Orange
+   - Conducted regression and scatter plot analysis using multiple axes and categorical/numeric data.
+
+4. Microsoft News Recommendation System (Machine Learning)
+   - Implemented XGBoost model for click-through rate (CTR) and AUC evaluation.

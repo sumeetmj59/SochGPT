@@ -1,0 +1,72 @@
+from fastapi import FastAPI, UploadFile, File, Form
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings import OllamaEmbeddings
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.document_loaders import TextLoader, PyPDFLoader
+from pathlib import Path
+import shutil, uuid, requests
+
+DOCS = Path("docs")
+DB = Path("chroma_db")
+DOCS.mkdir(exist_ok=True)
+DB.mkdir(exist_ok=True)
+
+app = FastAPI(title="SIL API")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+emb = OllamaEmbeddings(model="mistral")
+vs = Chroma(collection_name="sil", persist_directory=str(DB), embedding_function=emb)
+
+def index_path(p: Path):
+    docs = []
+    if p.suffix.lower() in [".txt", ".md", ".csv"]:
+        docs.extend(TextLoader(str(p), autodetect_encoding=True).load())
+    elif p.suffix.lower() == ".pdf":
+        docs.extend(PyPDFLoader(str(p)).load())
+    else:
+        return
+    chunks = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=150).split_documents(docs)
+    vs.add_documents(chunks)
+    vs.persist()
+
+class ChatIn(BaseModel):
+    query: str
+
+@app.post("/chat")
+def chat(inp: ChatIn):
+    retriever = vs.as_retriever(search_kwargs={"k": 4})
+    ctx_docs = retriever.get_relevant_documents(inp.query)
+    context = "\n\n".join([f"[{i+1}] {d.page_content[:1200]}" for i, d in enumerate(ctx_docs)])
+
+    prompt = f"""You are Sumeet's Intelligence Lab assistant.
+Use the CONTEXT when helpful. If not found, answer naturally.
+Keep answers friendly and concise.
+
+CONTEXT:
+{context}
+
+Question: {inp.query}
+Answer:"""
+
+    r = requests.post("http://localhost:11434/api/generate",
+                      json={"model": "mistral", "prompt": prompt, "stream": False})
+    out = r.json().get("response", "")
+    sources = [d.metadata.get("source", "") for d in ctx_docs]
+    return {"answer": out, "sources": sources}
+
+@app.post("/upload")
+def upload(file: UploadFile = File(...)):
+    suffix = Path(file.filename).suffix
+    dst = DOCS / f"{uuid.uuid4().hex}{suffix}"
+    with dst.open("wb") as f:
+        shutil.copyfileobj(file.file, f)
+    index_path(dst)
+    return {"ok": True, "stored_as": dst.name}
