@@ -12,3 +12,5 @@ chromadb/
 sil-ui/node_modules/
 sil-ui/dist/
 sil-ui/.env*
+node_modules/
+.vercel/
