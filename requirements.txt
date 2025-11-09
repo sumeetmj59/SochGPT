@@ -3,3 +3,8 @@ uvicorn[standard]==0.30.6
 pydantic==2.9.2
 python-multipart==0.0.9
 requests==2.32.3
+langchain==0.2.14
+langchain-community==0.2.12
+langchain-text-splitters==0.2.2
+chromadb==0.5.3
+ollama==0.1.8
